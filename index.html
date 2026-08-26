@@ -1,0 +1,1653 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Преподаватель</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Golos+Text:wght@400;500;600;800&display=swap" rel="stylesheet"> -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700&display=swap&subset=cyrillic,cyrillic-ext,latin" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- * стили -->
+  <style>
+    :root {
+      --ink: #12241f;
+      --paper: #f5f3ec;
+      --paper-light: #FAF9F5;
+      --line: #dcd7c9;
+      --amber: #d97b29;
+      --amber-soft: #f4e3cf;
+      --teal: #2f6f63;
+      --teal-light: #324C68;
+      --muted: #6f7a72;
+      /* --blue-soft: #e2e9ee; */
+      --blue-soft: #EBF0F4;
+
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 320px;
+    }
+
+    body {
+      font-family: 'Fira Sans', Arial, sans-serif;
+      background: #fff;
+      color: var(--ink);
+      position: relative;
+    }
+
+    h1,
+    h2,
+    h3,
+    .df {
+      /* font-family: 'Unbounded', sans-serif; */
+      font-family: 'Fira Sans', Arial, sans-serif;
+      font-weight: 700;
+    }
+
+    #progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: var(--amber);
+      width: 0;
+      z-index: 2000;
+      transition: width .1s linear;
+    }
+
+    .brandbar {
+      background: var(--ink);
+      color: #cfd8d2;
+      font-size: .82rem;
+    }
+
+    .brandbar b {
+      color: var(--amber);
+      font-family: 'Unbounded';
+      letter-spacing: .05em;
+    }
+
+    /* шапка-визитка */
+    .hero {
+      background: var(--paper);
+      /* border-bottom: 1px solid var(--line); */
+      /* background-image: linear-gradient(transparent 21px, rgba(18, 36, 31, .06) 22px), linear-gradient(90deg, transparent 21px, rgba(18, 36, 31, .06) 22px); */
+      background-size: 22px 22px;
+      position: sticky;
+      z-index: 100;
+
+    }
+
+    .hero-photo {
+      position: relative;
+      max-width: 250px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto;
+    }
+
+    /* .hero-photo img {
+      position: relative;
+      object-fit: cover;
+      border-radius: 14px;
+      box-shadow: 0 20px 40px -20px rgba(18, 36, 31, .55);
+    } */
+
+    .hero-photo img {
+      height: 220px;
+      width: auto;
+      max-width: 100%;
+      display: block;
+      margin: 0 auto;
+      border-radius: 14px;
+      /* border: 2px solid var(--line); */
+      box-shadow: 2px 2px 8px rgba(18, 36, 31, .6);
+      /* box-shadow: 2px 2px 6px rgba(0, 0, 0, .6); */
+    }
+
+    @media (max-width: 767.98px) {
+      header.hero {
+        height: auto !important;
+        min-height: 250px;
+      }
+
+      .sticky-top-wrapper {
+        position: static;
+      }
+
+      .hero {
+        height: auto !important;
+        min-height: 200px;
+      }
+
+      html {
+        scroll-padding-top: 60px;
+      }
+
+      header.hero img {
+        height: 200px !important;
+        object-fit: cover;
+      }
+    }
+
+    .mask {
+      display: block;
+      overflow: hidden;
+    }
+
+    .mask>span {
+      display: block;
+      transform: translateY(110%);
+      animation: rise .8s cubic-bezier(.2, .7, .2, 1) forwards;
+
+    }
+
+    .mask.d1>span {
+      animation-delay: .1s
+    }
+
+    .mask.d2>span {
+      animation-delay: .2s
+    }
+
+    @keyframes rise {
+      to {
+        transform: none
+      }
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: .3rem .7rem;
+      font-size: .78rem;
+    }
+
+    .chip-text {
+      max-width: 36ch;
+      /* ≈ 20 знаков; можно 160px */
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+        }
+
+    /* * кнопки */
+
+    .chip-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: .3rem 1.5rem;
+      font-size: .78rem;
+      text-decoration: none;
+      color: var(--amber);
+      font-weight: bold;
+      box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .2);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+      &:hover {
+        background: var(--amber);
+        color: white;
+        box-shadow: 0 4px 6px 0 rgba(0, 0, 0, .2);
+        transform: translateY(-2px);
+        /* transition: all 0.3s ease-in-out; */
+
+      }
+
+      &:active {
+        transform: translateY(1px);
+        box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .2);
+        /* box-shadow:
+          0 2px 4px rgba(18, 36, 31, 0.15),
+          inset 0 -2px 4px rgba(47, 111, 99, 0.2),
+          inset 0 2px 4px rgba(250, 249, 245, 0.6); */
+      }
+    }
+
+    .btn-share {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: .3rem 1.5rem;
+      font-size: .78rem;
+      text-decoration: none;
+      color: var(--amber);
+      font-weight: bold;
+      box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .2);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+
+      &:hover {
+        background: var(--amber);
+        color: white;
+        box-shadow: 0 4px 6px 0 rgba(0, 0, 0, .2);
+        transform: translateY(-2px);
+        /* transition: all 0.3s ease-in-out; */
+      }
+
+      &:active {
+        transform: translateY(1px);
+        box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .2);
+      }
+    }
+
+    /* .btn-share.copied {
+      border-color: #3f9e63;
+      color: #3f9e63;
+    } */
+
+    .chip b {
+      color: var(--teal)
+    }
+
+
+
+    .hero-stats {
+      display: flex;
+      gap: 2.2rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-stats .num {
+      font-family: 'Unbounded';
+      font-weight: 800;
+      font-size: 1.7rem;
+      line-height: 1;
+    }
+
+    .hero-stats .num em {
+      font-style: normal;
+      color: var(--amber);
+    }
+
+    .hero-stats small {
+      color: var(--muted);
+      font-size: .7rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    /* липкое меню */
+    .sticky-tabs {
+      /* position: sticky;
+      top: 0;
+      z-index: 1020; */
+      background: rgba(255, 255, 255, .9);
+      backdrop-filter: blur(8px);
+      border-bottom: 2px solid var(--line);
+    }
+
+    .sticky-tabs .nav {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    /* .sticky-tabs .nav {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    } */
+
+    .sticky-tabs .nav::-webkit-scrollbar {
+      display: none
+    }
+
+    .sticky-tabs .nav-link {
+      color: var(--ink);
+      white-space: nowrap;
+      border-radius: 0;
+      padding: .85rem .9rem;
+      /* font-size: .88rem; */
+      font-size: 1rem;
+      font-weight: 500;
+      border-bottom: 3px solid transparent;
+      transition: .25s;
+      border-top: 1px solid var(--line);
+    }
+
+    .sticky-tabs .nav-link:hover {
+      color: var(--amber);
+      transform: translateY(-2px);
+      /* font-weight: 800; */
+      background-color: var(--paper);
+    }
+
+    .sticky-tabs .nav-link.active {
+      color: var(--amber);
+      border-bottom-color: var(--amber);
+      font-weight: 800;
+      background-color: var(--paper);
+      border-top: none;
+      border-right: 1px solid var(--line);
+    }
+
+    /* & секции */
+    .section {
+      padding: 2rem 2rem;
+      /* border-bottom: 1px solid var(--line); */
+      margin-block: 2rem;
+    }
+
+    .section.alt {
+      padding: 2rem 2rem;
+      background: var(--paper);
+      border-radius: 10px;
+    }
+
+    .section.blue {
+      padding: 2rem 2rem;
+      background: var(--blue-soft);
+      border-radius: 10px;
+    }
+
+    .kicker {
+      font-family: 'Fira Sans', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      /* letter-spacing: .28em; */
+      text-transform: uppercase;
+      /* color: var(--amber); */
+      /* color: var(--bs-primary-text-emphasis); */
+      color: var(--bs-secondary);
+    }
+
+    .post {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      /* color: var(--bs-primary-text-emphasis); */
+      color: var(--bs-secondary);
+      /* color: var(--amber); */
+    }
+
+    /* & заголовки */
+
+    .sec-title {
+      /* font-size: clamp(1.35rem, 2.6vw, 1.9rem); */
+      font-weight: 700;
+    }
+
+    .rule {
+      height: 4px;
+      width: 64px;
+      background: linear-gradient(90deg, var(--amber), transparent);
+      border-radius: 2px;
+      margin: .6rem 0 1.6rem;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity .7s, transform .7s cubic-bezier(.2, .7, .2, 1);
+    }
+
+    .reveal.in {
+      opacity: 1;
+      transform: none;
+    }
+
+
+    /* заголовок 3 уровня — младший брат .sec-title */
+    .sub-title {
+      /* font-size:1.1rem; */
+      font-weight: 500;
+      margin: 1.8rem 0 .45rem;
+      /* воздух сверху отделяет подраздел */
+    }
+
+    .sub-title:first-of-type {
+      margin-top: 0;
+    }
+
+    /* первый подраздел не отрываем лишним отступом */
+
+    /* укороченная версия вашей .rule */
+    .rule-sm {
+      height: 3px;
+      /* у .rule 4px */
+      width: 42px;
+      /* у .rule 64px */
+      background: linear-gradient(90deg, var(--amber), transparent);
+      border-radius: 2px;
+      margin: 0 0 1rem;
+      /* у .rule 0 0 1.3rem */
+    }
+
+    .rail {
+      position: sticky;
+      top: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .rail-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      /* padding: 1.2rem; */
+      padding: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+
+    }
+
+    .rail-card h3 {
+      font-size: .72rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #3f9e63;
+      display: inline-block;
+      animation: pulse 1.6s infinite;
+    }
+
+    .rail-card .box {
+      border: 1px solid var(--line);
+      padding: 5px 16px;
+      border-radius: 20px;
+      box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2);
+    }
+
+    @keyframes pulse {
+      50% {
+        opacity: .35
+      }
+    }
+
+    .btn-side {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      /* gap: .5rem; */
+      width: 100%;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      border-radius: 9px;
+      padding: .5rem .7rem;
+      color: var(--ink);
+      text-decoration: none;
+      font-size: .8rem;
+      font-weight: 500;
+      /* margin-bottom: .45rem; */
+      transition: .25s;
+      text-align: left;
+    }
+
+    .btn-side:last-child {
+      margin-bottom: 0;
+    }
+
+    .btn-side i.arr {
+      color: var(--teal);
+      font-size: .7rem;
+      transition: transform .2s;
+      flex-shrink: 0;
+    }
+
+    .btn-side:hover {
+      border-color: var(--amber);
+      color: var(--amber);
+      transform: translateX(4px);
+    }
+
+    .btn-side:hover i.arr {
+      transform: translateX(3px);
+    }
+
+
+    .timeline {
+      list-style: none;
+      padding: 0;
+      border-left: 2px solid var(--line);
+    }
+
+    .timeline li {
+      position: relative;
+      padding: 0 0 1.3rem 1.4rem;
+    }
+
+    .timeline li::before {
+      content: "";
+      position: absolute;
+      left: -8px;
+      top: .35rem;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #fff;
+      border: 3px solid var(--teal);
+    }
+
+    .timeline .year {
+      font-family: 'Unbounded';
+      font-size: .72rem;
+      color: var(--amber);
+    }
+
+    .pub {
+      display: flex;
+      gap: 1rem;
+      padding: .85rem .5rem;
+      border-bottom: 1px dashed var(--line);
+      transition: .25s;
+    }
+
+    .pub:hover {
+      background: var(--amber-soft);
+      border-radius: 10px;
+      padding-left: .9rem;
+    }
+
+    .pub .py {
+      font-family: 'Unbounded';
+      font-size: .8rem;
+      color: var(--teal);
+      min-width: 3rem;
+    }
+
+    .tag {
+      font-size: .6rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .2rem .5rem;
+      border-radius: 6px;
+      font-weight: 800;
+    }
+
+    .tag.scopus {
+      background: #e7f0ee;
+      color: var(--teal)
+    }
+
+    .tag.rinc {
+      background: var(--amber-soft);
+      color: var(--amber)
+    }
+
+    .tag.vak {
+      background: #eef0e4;
+      color: #5c6b2f
+    }
+
+    .tag.book {
+      background: #efe6f2;
+      color: #7a4a8d
+    }
+
+    .card-lift {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      height: 100%;
+      transition: .3s;
+    }
+
+    .card-lift:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 34px -20px rgba(18, 36, 31, .5);
+    }
+
+    .card-lift .bar {
+      height: 5px;
+      background: var(--amber);
+      border-radius: 14px 14px 0 0;
+    }
+
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 1rem;
+      background: #fff;
+    }
+
+    .metric .m-num {
+      font-family: 'Unbounded';
+      font-weight: 800;
+      font-size: 1.8rem;
+    }
+
+    .metric .m-num em {
+      font-style: normal;
+      color: var(--amber);
+    }
+
+    .table thead th {
+      font-family: 'Unbounded';
+      font-size: .6rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .news-img {
+      overflow: hidden;
+      border-radius: 12px;
+      aspect-ratio: 16/9;
+    }
+
+    .news-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .6s;
+    }
+
+    .news-item:hover .news-img img {
+      transform: scale(1.08);
+    }
+
+    .form-control,
+    .form-select {
+      border-radius: 10px;
+      border-color: var(--line);
+      background: var(--paper);
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 .2rem rgba(47, 111, 99, .15);
+      background: #fff;
+    }
+
+    .btn-ink {
+      background: var(--ink);
+      color: var(--paper);
+      border-radius: 10px;
+      font-weight: 600;
+      transition: .3s;
+      border: 1px solid var(--ink);
+    }
+
+    .btn-ink:hover {
+      background: var(--amber);
+      border-color: var(--amber);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    .btn-ghost {
+      border: 1px solid var(--ink);
+      color: var(--ink);
+      border-radius: 10px;
+      font-weight: 600;
+      transition: .3s;
+    }
+
+    .btn-ghost:hover {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none
+      }
+
+      .mask>span {
+        transform: none
+      }
+    }
+
+    /* & слайдер */
+    /* ── слайдер новостей ── */
+    .news-slider {
+      position: relative;
+    }
+
+    .news-item {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: .7rem;
+      height: 100%;
+    }
+
+    .news-item h3 {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      text-overflow: ellipsis;
+
+      min-height: 2.5em;
+    }
+
+    /* одинаковая высота плиток */
+    .news-nav {
+      position: absolute;
+      top: 42%;
+      transform: translateY(-50%);
+      z-index: 5;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 22px -14px rgba(18, 36, 31, .6);
+      transition: .25s;
+    }
+
+    .news-nav:hover {
+      background: var(--amber);
+      border-color: var(--amber);
+      color: #fff;
+    }
+
+    .news-nav.prev {
+      left: -14px;
+    }
+
+    .news-nav.next {
+      right: -14px;
+    }
+
+    .news-slider .carousel-indicators {
+      position: static;
+      margin: 1rem 0 0;
+    }
+
+    .news-slider .carousel-indicators [data-bs-target] {
+      width: 9px;
+      height: 9px;
+      border-radius: 6px;
+      border: 0;
+      background: var(--line);
+      opacity: 1;
+      margin: 0 4px;
+      transition: .25s;
+    }
+
+    .news-slider .carousel-indicators .active {
+      background: var(--amber);
+      width: 22px;
+    }
+  </style>
+</head>
+
+<body data-bs-spy="scroll" data-bs-target="#stickyNav" data-bs-offset="120" tabindex="0">
+
+  <div id="progress"></div>
+
+  <!-- <div class="brandbar py-2">
+  <div class="container-xxl d-flex justify-content-between flex-wrap gap-2">
+    <span><b>СПбГМТУ</b> Факультет цифрового образования</span>
+    <span class="d-none d-md-inline">Понедельник, 17 августа 2026</span>
+  </div>
+</div> -->
+
+  <div class="sticky-top-wrapper" style="position: sticky; top: 0; z-index: 1020; background: #fff;">
+
+
+    <!--* ═══ ШАПКА-ВИЗИТКА ═══ -->
+    <header class="hero" style="min-height: 250px; overflow: hidden;">
+      <div class="container-xxl h-100">
+        <div class="row g-0 align-items-stretch h-100">
+          <div class="col-md-2 col-3 d-flex">
+            <div class="hero-photo w-100 h-100 py-3">
+              <img src="https://media.smtu.ru:5001/smtu-main/SMTU_Site/%d0%9f%d0%b5%d1%80%d1%81%d0%be%d0%bd%d0%b0%d0%b6.jpg" style="height: 220px; width: auto; max-width: 100%; display: block;" alt="">
+            </div>
+          </div>
+          <div class="col-md-10 col-9 d-flex flex-column align-items-start justify-content-center p-3">
+            <span class="mask d-inline-flex flex-row gap-2 align-items-center">
+              <!-- <img src="https://www.smtu.ru/assets/img/logo_95_2.svg?v=2" style="height: 20px;" alt=""> -->
+              <span class="kicker">СПбГМТУ &middot; Факультет морского приборостроения</span></span>
+            <h1 class="display-font fw-bold mt-1 mb-2" style="font-size:clamp(1.4rem,3vw,2.5rem);line-height:1.15">
+              <span class="mask d1"><span>Преображенский-Вознесенский</span></span>
+              <span class="mask d1"><span>Иннокентий Пантелеймонович</span></span>
+            </h1>
+            <p class="post">Доцент кафедры корабельных автоматизированных комплексов и информационно-управляющих систем</p>
+            <div class="d-flex flex-row justify-content-between align-items-center w-100">
+              <div class="d-flex flex-wrap gap-2 mb-1">
+                <span class="chip"  title="Академик Российской академиии естественных наук (РАЕН)"><i class="bi bi-mortarboard"></i>
+                  <b class="chip-text">Академик Российской академиии естественных наук (РАЕН)</b></span>
+                <span class="chip" title="Доктор физико-математических наук"><i class="bi bi-mortarboard"></i>
+                   <b class="chip-text">Доктор физико-математических наук</b></span>
+                <span class="chip" title="Профессор"><i class="bi bi-patch-check"></i>
+                   <b class="chip-text">Профессор</b></span>
+                <span class="chip" title="Педагогический стаж"><i class="bi bi-clock-history"></i> Педагогический стаж — 17 лет</span>
+              </div>
+              <div class="d-flex flex-no-wrap justify-content-between align-items-center gap-3">
+                <div class="me-0">
+                  <a class="chip-link" href="#contact" title="Контакты">
+                    <i class="bi bi-telephone fs-4"></i>
+                    <i class="bi bi-envelope fs-4"></i>
+                    <i class="bi bi-chat fs-4"></i>
+                  </a>
+                </div>
+                <div class="me-0">
+                  <a class="btn-share" id="shareBtn" title="Поделиться ссылкой на страницу">
+                    <i class="bi bi-share fs-4"></i>
+                  </a>
+
+                  <!-- <button class="btn-share" type="button" id="shareBtn" title="Поделиться ссылкой на страницу">
+                    <i class="bi bi-share"></i><span>Поделиться</span>
+                  </button> -->
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- * ═══ ЛИПКОЕ МЕНЮ ═══ -->
+    <nav class="sticky-tabs" id="stickyNav">
+      <div class="container-xxl">
+        <ul class="nav nav-fill" data-bs-smooth-scroll="true">
+          <li class="nav-item"><a class="nav-link" href="#education">Образование</a></li>
+          <li class="nav-item"><a class="nav-link" href="#career">Карьера</a></li>
+          <li class="nav-item"><a class="nav-link" href="#edu-activity">Педагогическая деятельность</a></li>
+          <li class="nav-item"><a class="nav-link" href="#science">Научная деятельность</a></li>
+          <li class="nav-item"><a class="nav-link" href="#social">Общественная деятельность</a></li>
+
+          <!-- <li class="nav-item"><a class="nav-link fw-bold" href="#contact" style="color:var(--teal)">Контакты</a></li> -->
+          <li class="nav-item"><a class="nav-link" href="#news">Новости</a></li>
+
+        </ul>
+      </div>
+    </nav>
+
+  </div>
+  <div class="container-xxl">
+    <div class="row g-5">
+      <div class="col-lg-9">
+
+        <!--* Образование + повыш квалификации -->
+        <section class="section alt" id="education">
+          <!-- <span class="kicker">01</span> -->
+          <h2 class="sec-title reveal">Образование</h2>
+          <div class="rule"></div>
+          <ul class="timeline reveal">
+            <li><span class="year">2000 — 2004</span>
+              <h3 class="fs-6 fw-bold mb-1">СПбГМТУ · Бакалавриат</h3>180100 «Кораблестроение и океанотехника». Квалификация: «Бакалавр».
+            </li>
+            <li><span class="year">2004 — 2006</span>
+              <h3 class="fs-6 fw-bold mb-1">СПбГМТУ · Магистратура</h3>«Кораблестроение, океанотехника и системотехника объектов морской инфраструктуры». Квалификация: «Магистр».
+            </li>
+            <li><span class="year">2006 —2010</span>
+              <h3 class="fs-6 fw-bold mb-1">СПбГМТУ · Аспирантура</h3> «Техника и технологии кораблестроения и водного транспорта». Учёная степень: «Кандидат технических наук».
+            </li>
+            <li><span class="year">2017 — 2019</span>
+              <h3 class="fs-6 fw-bold mb-1">СПбГМТУ · Докторантура</h3> «Техника и технологии кораблестроения и водного транспорта». Учёная степень: «Доктор технических наук».
+            </li>
+          </ul>
+
+
+          <!--* Повышение квалификации -->
+
+          <section class="mt-5" id="upk">
+            <h3 class="sub-title reveal">Повышение квалификации</h3>
+            <div class="rule-sm"></div>
+            <div class="row g-3 reveal">
+              <div class="col-md-6">
+                <div class="card-lift">
+                  <div class="bar"></div>
+                  <div class="p-3"><span class="tag rinc">2015 · 72 ч</span>
+                    <h3 class="fs-6 fw-bold mt-2 mb-1">«Техника и технологии кораблестроения и водного транспорта»</h3><small class="text-secondary">Университет ИТМО</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card-lift">
+                  <div class="bar"></div>
+                  <div class="p-3"><span class="tag rinc">2016 · 48 ч</span>
+                    <h3 class="fs-6 fw-bold mt-2 mb-1">Оценка качества электронного обучения</h3><small class="text-secondary">НИУ ВШЭ</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card-lift">
+                  <div class="bar"></div>
+                  <div class="p-3"><span class="tag rinc">2022 · 36 ч</span>
+                    <h3 class="fs-6 fw-bold mt-2 mb-1">Инклюзивное образование и универсальный дизайн</h3><small class="text-secondary">СЗПУ, ИДО</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card-lift">
+                  <div class="bar"></div>
+                  <div class="p-3"><span class="tag rinc">2021 · 72 ч</span>
+                    <h3 class="fs-6 fw-bold mt-2 mb-1">Проектное обучение</h3><small class="text-secondary">Академия просвещения</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+
+        </section>
+
+        <!--* Карьера -->
+        <section class="section" id="career">
+          <!-- <span class="kicker">03</span> -->
+          <h2 class="sec-title reveal">Карьера</h2>
+          <div class="rule"></div>
+          <ul class="timeline reveal">
+            <li><span class="year">2004 — 2005</span> · <b>Лаборант </b> ЦКБ «Айсберг», Санкт-Петербург.</li>
+            <li><span class="year">2005 — 2010</span> · <b>Младший научный сотрудник</b> ЦКБ «Айсберг», Санкт-Петербург.</li>
+            <li><span class="year">2010 — 2019</span> · <b>Доцент</b> Кафедра проектирования судов, СПбГМТУ </li>
+            <li><span class="year">2019 — н. в.</span> · <b>Профессор </b> Кафедра проектирования судов, СПбГМТУ</li>
+
+          </ul>
+
+
+          <!--* Достижения -->
+          <section class="mt-5" id="pro">
+
+            <h3 class="sub-title reveal">Профессиональные достижения &middot; Награды</h3>
+            <div class="rule-sm"></div>
+            <div class="row g-3 reveal">
+              <div class="col-md-6">
+                <div class="card-lift">
+                  <div class="bar"></div>
+                  <div class="p-3"><i class="bi bi-trophy fs-4" style="color:var(--amber)"></i>
+                    <h3 class="fs-6 fw-bold mt-2 mb-1">«Преподаватель года — 2024»</h3><small class="text-secondary">Номинация «Харизма»</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card-lift">
+                  <div class="bar"></div>
+                  <div class="p-3"><i class="bi bi-award fs-4" style="color:var(--amber)"></i>
+                    <h3 class="fs-6 fw-bold mt-2 mb-1">Благодарность Минобрнауки РФ</h3><small class="text-secondary">2022 год</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card-lift">
+                  <div class="bar"></div>
+                  <div class="p-3"><i class="bi bi-people fs-4" style="color:var(--teal)"></i>
+                    <h3 class="fs-6 fw-bold mt-2 mb-1">Член диссовета ДС 212.031.01</h3><small class="text-secondary">2.2.11 – информационно-измерительные и управляющие системы (по отраслям)</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card-lift">
+                  <div class="bar"></div>
+                  <div class="p-3"><i class="bi bi-pencil-square fs-4" style="color:var(--teal)"></i>
+                    <h3 class="fs-6 fw-bold mt-2 mb-1">Рецензент журнала «Образование и наука»</h3><small class="text-secondary">Перечень ВАК, К1</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </section>
+
+
+        <!-- * Учебная деятельность -->
+
+
+        <!--* Программы -->
+        <section class="section alt" id="edu-activity">
+
+          <h2 class="sec-title reveal">Педагогическая деятельность</h2>
+          <div class="rule"></div>
+          <section class="mt-5" id="programs">
+            <!-- <span class="kicker">09</span> -->
+
+            <h3 class="sub-title reveal">Образовательные программы</h3>
+            <div class="rule-sm"></div>
+            <div class="row g-3 reveal">
+              <div class="col-md-4">
+                <div class="card-lift">
+                  <div class="bar"></div>
+                  <div class="p-3"><span class="tag vak">Базовое высшее образование</span>
+                    <h3 class="fs-6 fw-bold mt-2">Интеллектуальное управление морскими автономными системами (Очная форма)</h3><small class="text-secondary">27.03.04.04</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card-lift">
+                  <div class="bar"></div>
+                  <div class="p-3"><span class="tag scopus">Магистратура</span>
+                    <h3 class="fs-6 fw-bold mt-2">Вычислительная техника в системах управления морскими объектами (Очная форма)</h3><small class="text-secondary">09.04.01.01 · <b>руководитель программы</b></small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card-lift">
+                  <div class="bar"></div>
+                  <div class="p-3"><span class="tag rinc">ДПО</span>
+                    <h3 class="fs-6 fw-bold mt-2">Новые методы принятия проектных решений на различных стадиях проектирования судов и кораблей на основе цифровых технологий</h3><small class="text-secondary">72 ч · повышение квалификации</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <!--* Дисциплины -->
+            <section class="mt-5" id="courses">
+              <!-- <span class="kicker">08</span> -->
+              <h2 class="sec-title reveal">Читаемые дисциплины</h2>
+              <div class="rule"></div>
+              <div class="table-responsive reveal">
+                <table class="table align-middle">
+                  <thead>
+                    <tr>
+                      <th>Дисциплина</th>
+                      <th>Уровень</th>
+                      <th>Курс</th>
+                      <th>Семестр</th>
+                      <th class="text-end">Часы</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="fw-semibold">Функциональное программное обеспечение интеллектуальных информационно-управляющих систем и автоматизированных корабельных комплексов</td>
+                      <td>Базовое высшее образование</td>
+                      <td>3</td>
+                      <td>5</td>
+                      <td class="text-end">72</td>
+                    </tr>
+                    <tr>
+                      <td class="fw-semibold">Технологии разработки нейронных сетей в корабельных интеллектуальных информационно-управляющих системах</td>
+                      <td>Специализированное высшее образование</td>
+                      <td>1</td>
+                      <td>1</td>
+                      <td class="text-end">72</td>
+                    </tr>
+                    <tr>
+                      <td class="fw-semibold">Программная разработка корабельных интерактивных систем</td>
+                      <td>Бакалавриат</td>
+                      <td>2</td>
+                      <td>4</td>
+                      <td class="text-end">36</td>
+                    </tr>
+                    <tr>
+                      <td class="fw-semibold">Элементы автоматики управляющих систем и корабельных комплексов</td>
+                      <td>Магистратура</td>
+                      <td>2</td>
+                      <td>3</td>
+                      <td class="text-end">54</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <!--* Пособия -->
+            <section class="mt-5" id="books">
+              <!-- <span class="kicker">07</span> -->
+              <h2 class="sec-title reveal">Учебные пособия</h2>
+              <div class="rule"></div>
+              <div class="reveal">
+                <div class="pub"><span class="py">2024</span>
+                  <div><b>Базирование автономных необитаемых подводных аппаратов на подводных лодках(Красильников Е.П., Курносов А.А., Шавырин И.А.) </b> М.: Юрайт, 312 с. <span class="tag book">Учебное пособие</span></div>
+                </div>
+                <div class="pub"><span class="py">2022</span>
+                  <div><b>Системы противоторпедной защиты подводных лодок</b> СПб.: Лань, 188 с. <span class="tag book">Учебное пособие</span></div>
+                </div>
+                <div class="pub"><span class="py">2002</span>
+                  <div><b>Торпедные аппараты подводных лодок</b> СПб.: Лань, 256 с. <span class="tag book">Учебно-методическое пособие</span></div>
+                </div>
+              </div>
+            </section>
+
+            <!--* Расписание занятий -->
+            <section class="mt-5" id="schedule">
+              <!-- <span class="kicker">10</span> -->
+              <h2 class="sec-title reveal">Расписание занятий · осенний семестр</h2>
+              <div class="rule"></div>
+              <div class="table-responsive reveal">
+                <table class="table align-middle">
+                  <thead>
+                    <tr>
+                      <th>День</th>
+                      <th>Время</th>
+                      <th>Дисциплина</th>
+                      <th>Тип</th>
+                      <th>Группа</th>
+                      <th>Ауд.</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="fw-semibold">Пн</td>
+                      <td>10:00–11:30</td>
+                      <td>Методы искусственного интеллекта в мехатронике и робототехнике</td>
+                      <td><span class="tag vak">Лекция</span></td>
+                      <td>302-Б</td>
+                      <td>415</td>
+                    </tr>
+                    <tr>
+                      <td class="fw-semibold">Пн</td>
+                      <td>12:00–13:30</td>
+                      <td>Техника программирования в морских информационно-измерительных системах</td>
+                      <td><span class="tag rinc">Семинар</span></td>
+                      <td>302-Б</td>
+                      <td>417</td>
+                    </tr>
+                    <tr>
+                      <td class="fw-semibold">Ср</td>
+                      <td>14:00–15:30</td>
+                      <td>Проектирование онлайн-сред</td>
+                      <td><span class="tag vak">Лекция</span></td>
+                      <td>101-М</td>
+                      <td>220</td>
+                    </tr>
+                    <tr>
+                      <td class="fw-semibold">Чт</td>
+                      <td>10:00–11:30</td>
+                      <td>Программное обеспечение мехатронных и робототехнических систем</td>
+                      <td><span class="tag rinc">Лабораторное занятие</span></td>
+                      <td>204-Б</td>
+                      <td>к. 3</td>
+                    </tr>
+                    <tr>
+                      <td class="fw-semibold">Пт</td>
+                      <td>16:00–17:30</td>
+                      <td>Консультация</td>
+                      <td><span class="tag book">Консультация</span></td>
+                      <td>все</td>
+                      <td>118</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <!--* Сессия -->
+            <section class="mt-5" id="session">
+              <!-- <span class="kicker">11</span> -->
+              <h2 class="sec-title reveal">Расписание сессии · январь 2027</h2>
+              <div class="rule"></div>
+              <div class="table-responsive reveal">
+                <table class="table align-middle">
+                  <thead>
+                    <tr>
+                      <th>Дата</th>
+                      <th>Время</th>
+                      <th>Дисциплина</th>
+                      <th>Форма</th>
+                      <th>Группа</th>
+                      <th>Ауд.</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="fw-semibold">11.01</td>
+                      <td>10:00</td>
+                      <td>Методы искусственного интеллекта в мехатронике и робототехнике</td>
+                      <td><span class="tag rinc">Зачёт</span></td>
+                      <td>204-Б</td>
+                      <td>417</td>
+                    </tr>
+                    <tr>
+                      <td class="fw-semibold">18.01</td>
+                      <td>10:00</td>
+                      <td>Программное обеспечение мехатронных и робототехнических систем</td>
+                      <td><span class="tag vak">Экзамен</span></td>
+                      <td>302-Б</td>
+                      <td>415</td>
+                    </tr>
+                    <tr>
+                      <td class="fw-semibold">25.01</td>
+                      <td>12:00</td>
+                      <td>Проектирование онлайн-сред</td>
+                      <td><span class="tag vak">Экзамен</span></td>
+                      <td>101-М</td>
+                      <td>220</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="alert mt-3 py-2 reveal" style="background:var(--amber-soft);border:1px solid var(--amber);border-radius:12px">
+                <i class="bi bi-exclamation-triangle me-2" style="color:var(--amber)"></i><small>Консультации — за 2 дня до экзамена, ауд. 118, запись через ИСУУ.</small>
+              </div>
+            </section>
+
+          </section>
+        </section>
+
+        <!--* Наука -->
+        <section class="section" id="science">
+          <!-- <span class="kicker">04</span> -->
+          <h2 class="sec-title reveal">Научная деятельность </h2>
+          <div class="rule"></div>
+
+          <div class="row g-3 mb-4 reveal">
+            <div class="col-6 col-md-3">
+              <div class="metric"><span class="m-num">140 </span><small class="text-secondary">публикаций</small></div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="metric"><span class="m-num"><em>11 </em></span><small class="text-secondary">индекс Хирша</small></div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="metric"><span class="m-num">6 </span><small class="text-secondary">h-index Scopus</small></div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="metric"><span class="m-num">9 </span><small class="text-secondary">h-index РИНЦ</small></div>
+            </div>
+          </div>
+
+
+          <h3 class="sub-title reveal">Научные интересы</h3>
+          <div class="rule rule-sm"></div>
+          <p>Научные интересы связаны разработкой современных математических моделей для навигационных тренажеров, теорией турбулентности, вычислительной гидромеханикой, направленные на повышение безопасности судоходства.</p>
+
+          <p>Профессиональные компетенции включают тесное сочетание фундаментальной и прикладной гидродинамики, практическую реализацию математических расчетов и педагогические способности. Они позволяют использовать научные разработки в практической деятельности вузов и зарубежных компаний.</p>
+
+
+          <h3 class="sub-title reveal">Проекты</h3>
+          <div class="rule rule-sm"></div>
+
+          <ul class="timeline reveal">
+            <li><span class="year">2023 — 2025 </span><b>РНФ № 23-18-00412</b> — «Адаптивные тренажёры формирования вычислительного мышления», руководитель.</li>
+            <li><span class="year">2020 — 2022 </span><b>РФФИ № 20-013-00771</b> — «Модели персонализированного обучения», руководитель.</li>
+          </ul>
+
+
+          <!--* Патенты -->
+          <section class="mt-5" id="patents">
+            <!-- <span class="kicker">06</span> -->
+            <h3 class="sub-title reveal">Патенты и НИОКР</h3>
+            <div class="rule-sm"></div>
+            <div class="reveal">
+              <div class="pub"><span class="py">2025</span>
+                <div>Патент РФ № 2780000. <b>Способ обработки данных в распределенной информационной системе</b> // № 2021123456; заявл. 15.07.2021; опубл. 20.09.2022, бюл. № 26. </div>
+              </div>
+
+              <p class="mt-3 small"><a href="#" style="color:var(--teal)">Полный список (42) →</a> </p>
+            </div>
+          </section>
+
+
+          <!--* Публикации -->
+          <section class="mt-5" id="publications">
+            <!-- <span class="kicker">06</span> -->
+            <h3 class="sub-title reveal">Избранные публикации</h3>
+            <div class="rule-sm"></div>
+            <div class="reveal">
+              <div class="pub"><span class="py">2025</span>
+                <div>Рычков В.М., Цаплин В.В., Мещеряков А.Ю. <b>Минное, противоминное оружие, его боевая и повседневная эксплуатация</b> // СПб.: ВСОК ВМФ, 2005 <span class="tag vak">ВАК</span></div>
+              </div>
+              <div class="pub"><span class="py">2024</span>
+                <div>Рычков В.М., Куприянов Ю.А. <b>Основы теории надежности</b> //СПб.: ВМИ ВУНЦ ВМФ, 2017 <span class="tag scopus">Scopus</span></div>
+              </div>
+              <div class="pub"><span class="py">2023</span>
+                <div>Kozhemyakin I., Semenov N., Ryzhov V., Chemodanov M. <b>MULTI-AGENT CONTROL SYSTEM OF A ROBOT GROUP: VIRTUAL AND PHYSICAL EXPERIMENTS Kozhemyakin I., Semenov N., Ryzhov V., Chemodanov M.</b> // Lecture Notes in Computer Science. 2019. Т. 11659 LNAI. <span class="tag vak">Scopus</span></div>
+              </div>
+              <div class="pub"><span class="py">2021</span>
+                <div>Шилина Е.С., Шилин М.М., Семенов Н.Н. <b>МОДИФИКАЦИЯ АЛГОРИТМА ПРОСТРАНСТВЕННО-ВРЕМЕННОГО БЛОЧНОГО КОДИРОВАНИЯ ДЛЯ СОЗДАНИЯ ШУМОВОЙ ЛОКАЛЬНОЙ ПОМЕХИ</b> // Труды Крыловского государственного научного центра. 2019. № S2. <span class="tag scopus">Scopus</span></div>
+              </div>
+              <p class="mt-3 small"><a href="#" style="color:var(--teal)">Полный список (42) →</a> · <a href="#" style="color:var(--teal)">РИНЦ</a> · <a href="#" style="color:var(--teal)">ORCID</a></p>
+            </div>
+          </section>
+        </section>
+
+        <!--* Общественная деятельность -->
+        <section class="section alt" id="social">
+
+          <h2 class="sec-title reveal">Общественная деятельность</h2>
+          <div class="rule"></div>
+
+          <p><i class="bi bi-person me-2" style="color:var(--amber)"></i>Член учёного совета СПбГМТУ</a></p>
+
+        </section>
+
+
+
+        <!-- * Контакты -->
+        <section class="section blue" id="contact" style="border:0">
+          <!-- <span class="kicker">13</span> -->
+          <h2 class="sec-title reveal">Контактная информация</h2>
+          <div class="rule"></div>
+          <div class="row g-4 reveal">
+            <div class="col-md-6">
+              <p><i class="bi bi-envelope me-2" style="color:var(--amber)"></i><b>E-mail:</b> <a href="mailto:vorontsova@szpu.ru" style="color:var(--teal)">preobrazh@smtu.ru</a></p>
+              <p><i class="bi bi-telephone me-2" style="color:var(--amber)"></i><b>Кафедра:</b> +7 (812) 400-21-77, доб. 214</p>
+              <p><i class="bi bi-geo-alt me-2" style="color:var(--amber)"></i><b>Адрес:</b> Санкт-Петербург, Лоцманская ул, д.3, ауд. 318</p>
+              <p><i class="bi bi-clock me-2" style="color:var(--amber)"></i><b>Приёмные часы:</b> пятница, 16:00–17:30</p>
+
+              <div style="height: 40px;">
+                <a class="chip-link h-100 p-2" target="_blank" rel="noopener" href="https://t.me/share/url?url=https://ваш-сайт.ru/person/123&text=Преподаватель СПбГМТУ">
+                  <i class="fa-brands fa-telegram fa-2xl"></i>
+                </a>
+                <a class="chip-link h-100 p-2" target="_blank" rel="noopener" href="https://vk.com/share.php?url=https://ваш-сайт.ru/person/123">
+                  <i class="fa-brands fa-vk fa-2xl"></i>
+                </a>
+              </div>
+
+
+            </div>
+            <div class="col-md-6">
+              <form onsubmit="return sendForm(this)">
+                <div class="mb-2"><input class="form-control" placeholder="Ваше имя" required></div>
+                <div class="mb-2"><input type="email" class="form-control" placeholder="E-mail" required></div>
+                <div class="mb-2"><select class="form-select">
+                    <option>Тема обращения…</option>
+                    <option>Образовательный процесс</option>
+                    <option>Консультация</option>
+                    <option>Вопрос</option>
+                    <option>Другое</option>
+                  </select></div>
+                <div class="mb-3"><textarea class="form-control" rows="4" placeholder="Сообщение" required></textarea></div>
+                <label class="form-check-label small text-secondary mb-3"><input type="checkbox" class="form-check-input me-1" required> Согласен(на) на обработку персональных данных</label>
+                <button class="btn btn-ink w-100" type="submit"><i class="bi bi-send me-2"></i>Отправить</button>
+                <p class="form-ok text-center small fw-bold mt-2 mb-0" style="color:var(--teal);display:none"><i class="bi bi-check-circle me-1"></i>Сообщение отправлено!</p>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- * Новости -->
+        <!-- & простой вариант новостей -->
+        <!-- <section class="section" id="news">
+ 
+          <h2 class="sec-title reveal">Упоминание в новостях</h2>
+          <div class="rule"></div>
+          <div class="row g-3 reveal">
+            <div class="col-md-6 news-item">
+              <div class="news-img"><img src="https://picsum.photos/seed/edtech-award/640/360" alt=""></div><small class="text-secondary">12.05.2026</small>
+              <h3 class="fs-6 fw-bold mt-1">Победа в конкурсе «Преподаватель года»</h3>
+            </div>
+            <div class="col-md-6 news-item">
+              <div class="news-img"><img src="https://picsum.photos/seed/grant-lab/640/360" alt=""></div><small class="text-secondary">03.02.2026</small>
+              <h3 class="fs-6 fw-bold mt-1">EdTech-Lab получила грант РНФ</h3>
+            </div>
+            <div class="col-md-6 news-item">
+              <div class="news-img"><img src="https://picsum.photos/seed/open-lecture/640/360" alt=""></div><small class="text-secondary">21.11.2025</small>
+              <h3 class="fs-6 fw-bold mt-1">Открытая лекция «Школа после алгоритмов»</h3>
+            </div>
+            <div class="col-md-6 news-item">
+              <div class="news-img"><img src="https://picsum.photos/seed/textbook-release/640/360" alt=""></div><small class="text-secondary">08.09.2025</small>
+              <h3 class="fs-6 fw-bold mt-1">Вышел учебник «Цифровая дидактика»</h3>
+            </div>
+          </div>
+        </section> -->
+
+        <!-- & карусель новостей -->
+        <section class="section" id="news">
+          <h2 class="sec-title reveal">Упоминание в новостях</h2>
+          <div class="rule"></div>
+
+          <div id="newsCarousel" class="carousel slide news-slider reveal" data-bs-ride="false">
+            <div class="carousel-inner">
+
+              <!-- ═══ Слайд 1: карточки 1–9 (плитка 3×3) ═══ -->
+              <div class="carousel-item active">
+                <div class="row g-2">
+                  <div class="col-sm-6 col-lg-4">
+                    <div class="news-item">
+                      <div class="news-img"><img src="https://ds1.smtu.ru/files/sitenews/2026/08/19/big/2000.jpg?token_static=0441d0876ad88fbe3deed5930c4433b8" alt=""></div>
+                      <small class="text-secondary">12.05.2026</small>
+                      <h3 class="fs-6 fw-bold mt-1 mb-0">Победа в конкурсе «Преподаватель года»</h3>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-lg-4">
+                    <div class="news-item">
+                      <div class="news-img"><img src="https://ds1.smtu.ru/files/sitenews/2026/08/19/big/1999.jpg?token_static=65f096d9ae7cead136c1397cf4185832" alt=""></div>
+                      <small class="text-secondary">03.02.2026</small>
+                      <h3 class="fs-6 fw-bold mt-1 mb-0">EdTech-Lab получила грант РНФ</h3>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-lg-4">
+                    <div class="news-item">
+                      <div class="news-img"><img src="https://ds1.smtu.ru/files/sitenews/2026/08/05/big/1994.jpg?token_static=9f83b67f44d25d2be8950171c761670c" alt=""></div>
+                      <small class="text-secondary">21.11.2025</small>
+                      <h3 class="fs-6 fw-bold mt-1 mb-0">Открытая лекция «Школа после алгоритмов»</h3>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-lg-4">
+                    <div class="news-item">
+                      <div class="news-img"><img src="https://ds1.smtu.ru/files/sitenews/2026/08/05/big/1993.jpg?token_static=a46e107fdfa3a8416de43faddce3537e" alt=""></div>
+                      <small class="text-secondary">08.09.2025</small>
+                      <h3 class="fs-6 fw-bold mt-1 mb-0">Вышел учебник «Цифровая дидактика»</h3>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-lg-4">
+                    <div class="news-item">
+                      <div class="news-img"><img src="https://ds1.smtu.ru/files/sitenews/2026/07/27/big/1983.jpg?token_static=0de6ff94cd68f6b04daa8e1b3d922583" alt=""></div>
+                      <small class="text-secondary">14.06.2025</small>
+                      <h3 class="fs-6 fw-bold mt-1 mb-0">Студенты кафедры — призёры олимпиады по робототехнике. </h3>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-lg-4">
+                    <div class="news-item">
+                      <div class="news-img"><img src="https://ds1.smtu.ru/files/sitenews/2026/07/07/big/1972.jpg?token_static=1267e742174efbdbb466553dbb2926f7" alt=""></div>
+                      <small class="text-secondary">30.04.2025</small>
+                      <h3 class="fs-6 fw-bold mt-1 mb-0">Подписано соглашение о сотрудничестве с ЦКБ «Айсберг» между ректором СМТУ и директором ЦКБ</h3>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-lg-4">
+                    <div class="news-item">
+                      <div class="news-img"><img src="https://ds1.smtu.ru/files/sitenews/2026/07/03/big/1969.jpg?token_static=4b5ae547daf008096c265810ac79efc5" alt=""></div>
+                      <small class="text-secondary">17.03.2025</small>
+                      <h3 class="fs-6 fw-bold mt-1 mb-0">Мастер-класс по проектированию онлайн-курсов</h3>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-lg-4">
+                    <div class="news-item">
+                      <div class="news-img"><img src="https://ds1.smtu.ru/files/sitenews/2026/07/06/big/1971.jpg?token_static=dde65779f0c33b93f838d5e20f8e3a27" alt=""></div>
+                      <small class="text-secondary">05.02.2025</small>
+                      <h3 class="fs-6 fw-bold mt-1 mb-0">Доклад на международной конференции в Калининграде</h3>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-lg-4">
+                    <div class="news-item">
+                      <div class="news-img"><img src="https://ds1.smtu.ru/files/sitenews/2026/07/27/big/1985.jpg?token_static=148d877a7329e99a7505dadc8a335450" alt=""></div>
+                      <small class="text-secondary">12.12.2024</small>
+                      <h3 class="fs-6 fw-bold mt-1 mb-0">Кафедра открыла лабораторию морских ИИС</h3>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ═══ Слайд 2: карточки 10–12 ═══ -->
+              <div class="carousel-item">
+                <div class="row g-2">
+                  <div class="col-sm-6 col-lg-4">
+                    <div class="news-item">
+                      <div class="news-img"><img src="https://ds1.smtu.ru/files/sitenews/2026/06/22/big/1947.jpg?token_static=8cef5b0792bfc9ae0fbd7d74d96ba53d" alt=""></div>
+                      <small class="text-secondary">03.10.2024</small>
+                      <h3 class="fs-6 fw-bold mt-1 mb-0">Экспедиция студентов на учебном судне «Морской инженер»</h3>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-lg-4">
+                    <div class="news-item">
+                      <div class="news-img"><img src="https://ds1.smtu.ru/files/sitenews/2026/06/18/big/1941.jpg?token_static=44fb08b9f8a9909825e43560b43396b8" alt=""></div>
+                      <small class="text-secondary">19.09.2024</small>
+                      <h3 class="fs-6 fw-bold mt-1 mb-0">Обновлён курс «Методы ИИ в мехатронике»</h3>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-lg-4">
+                    <div class="news-item">
+                      <div class="news-img"><img src="https://ds1.smtu.ru/files/sitenews/2026/06/22/big/1948.jpg?token_static=405878cf5c22fb1286cda9c6ed7de085" alt=""></div>
+                      <small class="text-secondary">01.09.2024</small>
+                      <h3 class="fs-6 fw-bold mt-1 mb-0">Кафедра поздравила первокурсников с началом учёбы</h3>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- стрелки листания -->
+            <button class="news-nav prev" type="button" data-bs-target="#newsCarousel" data-bs-slide="prev" aria-label="Предыдущие новости">
+              <i class="bi bi-chevron-left"></i>
+            </button>
+            <button class="news-nav next" type="button" data-bs-target="#newsCarousel" data-bs-slide="next" aria-label="Следующие новости">
+              <i class="bi bi-chevron-right"></i>
+            </button>
+
+            <!-- точки-индикаторы -->
+            <div class="carousel-indicators">
+              <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="0" class="active" aria-label="Страница 1"></button>
+              <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="1" aria-label="Страница 2"></button>
+            </div>
+          </div>
+        </section>
+
+
+      </div>
+
+      <!--* ═══ ПРАВЫЙ САЙД-БАР ═══ -->
+      <aside class="col-lg-3 d-none d-lg-block">
+        <div class="rail pt-4 mb-4">
+          <div class="rail-card">
+            <h3 class="mb-3">Ближайшие события</h3>
+            <div class="box" style="background-color: var(--paper-light)">
+              <p class="small mb-0"><span class="status-dot me-2"></span><b>Сейчас </b></p>
+              <p class="small mb-0" style="color: blue;">Проектирование онлайн-сред · <i>Семинар · корп.А, ауд.220</i> </p>
+            </div>
+            <div class="box">
+              <p class="small mb-1" style="color:var(--muted)">25.01 · 10:00</p>
+              <p class="small mb-0">Экзамен «Проектирование онлайн-сред», 101-М, ауд. 220</p>
+            </div>
+            <!-- <a href="mailto:vorontsova@szpu.ru" class="btn btn-ink btn-sm w-100 mb-2">Написать</a>
+            <a href="#" class="btn btn-ghost btn-sm w-100">Записаться на приём</a> -->
+          </div>
+
+          <!-- & вариант без кнопок -->
+          <!-- <div class="rail-card">
+            <h3 class="mb-2">Учебный процесс</h3>
+            <a href="#schedule" class="small mb-1"><i class="bi bi-calendar-week me-2" style="color:var(--amber)"></i>Расписание занятий</a>
+            <a href="#session" class="small mb-1"><i class="bi bi-mortarboard me-2" style="color:var(--amber)"></i>Сессия</a>
+            <a href="#books" class="small mb-0"><i class="bi bi-book me-2" style="color:var(--amber)"></i>Учебные пособия</a>
+          </div> -->
+
+          <!-- & вариант с кнопками -->
+          <div class="rail-card">
+            <h3>Учебный процесс</h3>
+            <a class="btn-side" href="#schedule"><span>Расписание занятий</span><i class="bi bi-arrow-right arr"></i></a>
+            <a class="btn-side" href="#session"><span>Сессия</span><i class="bi bi-arrow-right arr"></i></a>
+            <a class="btn-side" href="#books"><span>Учебные пособия</span><i class="bi bi-arrow-right arr"></i></a>
+          </div>
+
+          <!-- <div class="rail-card">
+            <h3 class="mb-2">Профили</h3>
+            <p class="small mb-1"><i class="bi bi-link-45deg me-1" style="color:var(--amber)"></i>ORCID 0000-0002-1825-0092</p>
+            <p class="small mb-1"><i class="bi bi-link-45deg me-1" style="color:var(--amber)"></i>Профиль РИНЦ</p>
+            <p class="small mb-0"><i class="bi bi-link-45deg me-1" style="color:var(--amber)"></i>Google Scholar</p>
+          </div> -->
+
+          <div class="rail-card mb-0">
+            <h3><i class="bi bi-link-45deg"></i>Профили</h3>
+            <a class="btn-side" href="#"><span>ORCID 0000-0002-1825-0092</span><i class="bi bi-box-arrow-up-right arr"></i></a>
+            <a class="btn-side" href="#"><span>Профиль РИНЦ</span><i class="bi bi-box-arrow-up-right arr"></i></a>
+            <a class="btn-side" href="#"><span>Scopus</span><i class="bi bi-box-arrow-up-right arr"></i></a>
+            <a class="btn-side" href="#"><span>Web Of Science</span><i class="bi bi-box-arrow-up-right arr"></i></a>
+            <!-- <a class="btn-side" href="#"><span>Google Scholar</span><i class="bi bi-box-arrow-up-right arr"></i></a> -->
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+
+  <!-- * footer -->
+  <footer class="brandbar py-3 mt-0">
+    <div class="container-xxl small d-flex justify-content-between flex-wrap">
+      <span>© 2026 СПбГМТУ · Управление информационных технологий</span>
+      <span>Страница обновлена: 17.08.2026</span>
+    </div>
+  </footer>
+
+  <!-- * scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // появление секций
+    if (!reduced) {
+      const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
+      document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    } else document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+    // счётчики
+    document.querySelectorAll('[data-count]').forEach(el => {
+      const t = +el.dataset.count; if (reduced) { el.textContent = t; return; }
+      const io2 = new IntersectionObserver(es => es.forEach(e => {
+        if (!e.isIntersecting) return; io2.unobserve(e.target);
+        let t0; const step = ts => {
+          if (!t0) t0 = ts; const p = Math.min((ts - t0) / 1100, 1);
+          e.target.textContent = Math.round(t * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      }), { threshold: .5 });
+      io2.observe(el);
+    });
+    // индикатор прокрутки
+    addEventListener('scroll', () => {
+      const h = document.documentElement, p = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
+      document.getElementById('progress').style.width = p + '%';
+    }, { passive: true });
+    function sendForm(f) { f.querySelector('.form-ok').style.display = 'block'; f.querySelectorAll('input,textarea,select,button').forEach(e => e.disabled = true); return false; }
+
+
+    // share
+    document.getElementById('shareBtn')?.addEventListener('click', function () {
+      const btn = this;
+      const url = location.href;
+
+      // 1) Мобильные и поддерживаемые браузеры — системное меню «Поделиться»
+      if (navigator.share) {
+        navigator.share({ title: document.title, url: url }).catch(() => { });
+        return;
+      }
+
+      // 2) Десктоп — копируем ссылку в буфер обмена
+      navigator.clipboard.writeText(url).then(() => {
+        btn.classList.add('copied');
+        btn.querySelector('span').textContent = 'Ссылка скопирована!';
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.querySelector('span').textContent = 'Поделиться';
+        }, 2000);
+      }).catch(() => {
+        // 3) Совсем старые браузеры
+        prompt('Скопируйте ссылку:', url);
+      });
+    });
+
+
+  </script>
+</body>
+
+</html>
